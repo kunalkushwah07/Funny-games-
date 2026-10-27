@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOVE CALCULATOR 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--p:#ff4d8d;--p2:#ff8fb8;--v:#a78bfa;--t:#3a2447}
+*{box-sizing:border-box}body{margin:0;font-family:Poppins,system-ui,sans-serif;color:var(--t);background:linear-gradient(160deg,#ffe3ef,#fff5fa 50%,#efe6ff);min-height:100vh}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:10px;background:#fff9;backdrop-filter:blur(10px)}
+nav a{color:var(--t);text-decoration:none;padding:6px 14px;border-radius:20px;font-size:14px;font-weight:600}nav a:hover{background:#ffe0ee}
+header{text-align:center;padding:40px 16px 10px}h1{margin:8px 0;font-size:clamp(30px,8vw,52px);background:linear-gradient(90deg,var(--p),var(--v));-webkit-background-clip:text;color:transparent}
+.badge{display:inline-block;background:#ffe0ee;color:#d6195f;border:1px solid var(--p2);padding:6px 16px;border-radius:30px;font-weight:700;font-size:13px}
+.card{max-width:520px;margin:20px auto;padding:22px;background:#ffffffd9;backdrop-filter:blur(12px);border:1px solid #fff;border-radius:24px;box-shadow:0 10px 35px #ff4d8d22}
+section{padding:0 14px}h2{text-align:center;font-size:20px}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input[type=text]{width:100%;padding:12px 14px;border:2px solid #f6cfe0;border-radius:14px;font:inherit;outline:none}input[type=text]:focus{border-color:var(--p)}
+.g{display:flex;gap:10px}.g label{flex:1;margin:0;padding:10px;border:2px solid #f6cfe0;border-radius:14px;text-align:center;cursor:pointer;font-weight:400}.g input{display:none}.g label:has(input:checked){border-color:var(--p);background:#ffe9f2;font-weight:600}
+.err{color:#d6195f;font-size:12px;min-height:16px}
+button{font:inherit;font-weight:700;border:0;border-radius:30px;padding:12px 22px;cursor:pointer;color:#fff;background:linear-gradient(90deg,var(--p),var(--v));transition:.2s}button:hover{transform:translateY(-2px)}button:disabled{opacity:.5}
+button.s{background:#fff;color:var(--p);border:2px solid var(--p2)}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.row button{flex:1}
+.note{font-size:12px;text-align:center;margin-top:12px;color:#7a6683}
+.hidden{display:none}.res{text-align:center}.big{font-size:56px;font-weight:700;color:var(--p)}
+.meter{height:12px;background:#fde1ec;border-radius:10px;overflow:hidden}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--p2),var(--p),var(--v));transition:width 1.4s}
+.heart{font-size:64px;display:inline-block;animation:b 1s infinite}@keyframes b{50%{transform:scale(1.2)}}
+.load{text-align:center;font-size:50px;animation:b .7s infinite}
+.f{position:fixed;bottom:-40px;pointer-events:none;animation:up linear forwards;z-index:9}@keyframes up{to{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+.glow{box-shadow:0 0 40px #ff4d8d88}
+footer{text-align:center;padding:30px 14px;font-size:13px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--t);color:#fff;padding:10px 18px;border-radius:20px;opacity:0;transition:.3s;z-index:20}#toast.on{opacity:1}
+</style></head><body>
+<nav><a href="#home">Home</a><a href="#calc">Love Calculator</a><a href="#rank">Love Rank</a><a href="#about">About</a></nav>
+<header id="home"><span class="badge">💗 LOVE CHECKER</span><h1>LOVE CALCULATOR 💗</h1>
+<b>"Your Crush. Your Secret. Your Love Score!"</b>
+<p>Curious about your love connection? Enter two names, reveal your Love Score, and discover your Love Rank!</p><p>Two names. One score. Endless curiosity! 💕</p></header>
+
+<section id="calc"><div class="card" id="calcCard"><h2>💘 CHECK YOUR LOVE SCORE</h2>
+<form id="f" novalidate>
+<label for="an">YOUR NAME</label><input type="text" id="an" placeholder="Enter your name" maxlength="40" autocomplete="off"><div class="err" id="e1"></div>
+<label>YOUR GENDER</label><div class="g"><label><input type="radio" name="ag" value="Male">Male</label><label><input type="radio" name="ag" value="Female">Female</label></div><div class="err" id="e2"></div>
+<label for="bn">YOUR CRUSH'S NAME</label><input type="text" id="bn" placeholder="Enter your crush's name" maxlength="40" autocomplete="off"><div class="err" id="e3"></div>
+<label>YOUR CRUSH'S GENDER</label><div class="g"><label><input type="radio" name="bg" value="Male">Male</label><label><input type="radio" name="bg" value="Female">Female</label></div><div class="err" id="e4"></div>
+<div class="row"><button id="go">💗 CALCULATE LOVE %</button><button type="button" class="s" id="rs">↻ RESET</button></div>
+<div class="note">Results are never shown publicly. Entered names are saved and visible only to the site admin.</div></form></div>
+<div class="card load hidden" id="load">💗<div style="font-size:14px">Reading the hearts…</div></div>
+<div class="card res hidden" id="res"><h2>💗 LOVE COMPATIBILITY RESULT</h2><div id="rnames" style="font-weight:700"></div><div class="heart">💗</div><div class="big" id="rp">0%</div><div id="rcat" style="font-weight:700;color:#8b5cf6"></div><p id="rmsg"></p><div class="meter"><i id="rm"></i></div>
+<div class="row"><button id="sh">SHARE RESULT</button><button class="s" id="again">CALCULATE AGAIN</button></div></div></section>
+
+<section id="rank"><div class="card"><h2>💗 FIND YOUR LOVE RANK</h2>
+<label for="rn">YOUR NAME</label><input type="text" id="rn" placeholder="Enter your name" maxlength="40"><div class="err" id="e5"></div>
+<label>GENDER</label><div class="g"><label><input type="radio" name="rg" value="Male">Male</label><label><input type="radio" name="rg" value="Female">Female</label></div>
+<div class="row"><button id="rgo">FIND MY RANK</button></div>
+<div class="res hidden" id="rr"><div class="heart">👑</div><div class="big" id="rt" style="font-size:30px"></div><div id="rsc"></div><div class="row"><button id="rsh">SHARE RANK</button></div></div></div></section>
+
+<section id="share"><div class="card res"><h2>💌 SHARE YOUR LOVE SCORE</h2><p style="font-size:13px">Shared links show only a generic score — no names.</p>
+<div class="row"><button id="b1">📱 Share</button><button id="b2" style="background:#25d366">WhatsApp</button><button class="s" id="b3">Copy Link</button><button class="s" id="b4">Copy Result Text</button></div></div></section>
+
+<section id="shared" class="hidden"><div class="card res"><h2>💗 Shared Love Result</h2><div id="sbody"></div><div class="row"><button onclick="location.href=location.pathname">Calculate Again</button></div></div></section>
+
+<section id="about"><div class="card"><h2>ABOUT LOVE CALCULATOR</h2><p>Love Calculator is a fun entertainment tool that uses English letters and name-based calculations to generate playful compatibility scores. Results are fictional and cannot determine someone's actual feelings or predict a relationship. Gender never affects the score.</p></div></section>
+<footer><b>LOVE CALCULATOR 💗</b><br>Your Crush. Your Secret. Your Love Score!<br>Made for fun, curiosity, and entertainment.</footer>
+<div id="toast"></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import {getFirestore,collection,addDoc,doc,getDoc,updateDoc,increment,serverTimestamp,Timestamp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCDtMZL2mApGy5oXPKnHZxz6fXxFG6PI-s",authDomain:"anonymous-message-e44e3.firebaseapp.com",projectId:"anonymous-message-e44e3",storageBucket:"anonymous-message-e44e3.firebasestorage.app",messagingSenderId:"779609497076",appId:"1:779609497076:web:9e7b1f7e648de8887ceda1",measurementId:"G-6PD0FMTTM4"};
+const db=getFirestore(initializeApp(firebaseConfig)),$=id=>document.getElementById(id);
+
+/* ===== deterministic algorithm (gender not used) ===== */
+const norm=s=>s.toLowerCase().replace(/[^a-z]/g,"");
+const val=s=>[...s].reduce((t,c,i)=>t+(c.charCodeAt(0)-96)*(i+1),0);
+function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}h^=h>>>13;h=Math.imul(h,0x5bd1e995);return(h^h>>>15)>>>0}
+function love(a,b){a=norm(a);b=norm(b);const fq=s=>{const m={};for(const c of s)m[c]=(m[c]||0)+1;return m},fa=fq(a),fb=fq(b);
+ let cm=0;for(const c in fa)if(fb[c])cm+=Math.min(fa[c],fb[c]);
+ return((hash(a+"|"+b)+val(a)*31+val(b)*17+cm*13)>>>0)%100+1}
+const CATS=[[20,"Unexpected Connection",["Surprises are the best love stories!","Opposites sometimes spark the brightest fun."]],[40,"Mysterious Vibes",["There's a little mystery here — and mystery is charming!","Something intriguing is brewing between these names."]],[60,"Friendship Energy",["Great friendships are the strongest foundations!","Warm, easy energy — fun to hang out with!"]],[80,"Romantic Possibilities",["Sparks are in the air — who knows what could bloom!","A lovely romantic glow surrounds these names."]],[99,"Magical Connection",["Your names have a magical connection!","Wow — the stars seem to be smiling on this pair!"]],[100,"Perfect Match",["A perfect score in this playful universe!"]]];
+const cat=p=>CATS.find(c=>p<=c[0]);
+const RANKS=[[20,"Secret Admirer"],[40,"Heart Explorer"],[60,"Romantic Dreamer"],[80,"Love Legend"],[100,"Heartbreaker Champion"]];
+
+const toast=m=>{const t=$("toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),2200)};
+const NAME=/^[A-Za-z][A-Za-z' -]{0,38}$/,clean=s=>s.trim().replace(/\s+/g," ");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const radio=n=>(document.querySelector(`input[name=${n}]:checked`)||{}).value;
+function count(el,to){const st=performance.now();(function t(now){const k=Math.min(1,(now-st)/1400);el.textContent=Math.round(to*k)+"%";if(k<1)requestAnimationFrame(t)})(st)}
+function hearts(n=40){for(let i=0;i<n;i++){const h=document.createElement("div");h.className="f";h.textContent=["💖","💗","💕"][i%3];h.style.left=Math.random()*100+"vw";h.style.fontSize=14+Math.random()*22+"px";h.style.animationDuration=2+Math.random()*2.5+"s";document.body.appendChild(h);setTimeout(()=>h.remove(),5000)}}
+let last=null,busy=false;
+
+/* ===== calculator ===== */
+$("f").addEventListener("submit",e=>{e.preventDefault();if(busy)return;
+ const a=clean($("an").value),b=clean($("bn").value),ag=radio("ag"),bg=radio("bg");let ok=true;
+ const chk=(id,c,m)=>{$(id).textContent=c?"":m;if(!c)ok=false};
+ chk("e1",NAME.test(a),"Enter a valid name (letters, spaces, ' or -).");chk("e2",!!ag,"Please select your gender.");
+ chk("e3",NAME.test(b),"Enter your crush's valid name.");chk("e4",!!bg,"Please select your crush's gender.");
+ if(!ok)return;busy=true;$("go").disabled=true;$("calcCard").classList.add("hidden");$("res").classList.add("hidden");$("load").classList.remove("hidden");
+ const pct=love(a,b);
+ addDoc(collection(db,"records"),{a,ag,b,bg,pct,t:serverTimestamp()}).catch(()=>{});
+ setTimeout(()=>{$("load").classList.add("hidden");show(a,b,pct);busy=false;$("go").disabled=false},1000+Math.random()*800)});
+function show(a,b,pct){const c=cat(pct),m=c[2][hash(norm(a)+norm(b))%c[2].length];last={pct};
+ const r=$("res");r.classList.remove("hidden","glow");
+ $("rnames").textContent=pct===100?`💖 ${a} × ${b} — A PERFECT 100% MATCH! 💖`:`${a} × ${b}`;
+ $("rcat").textContent=c[1];$("rmsg").textContent=pct===100?`${m} Just for fun — it doesn't prove anyone's feelings. 🎉`:m;
+ $("rm").style.width="0";setTimeout(()=>$("rm").style.width=pct+"%",50);count($("rp"),pct);
+ if(pct===100){r.classList.add("glow");hearts(60)}r.scrollIntoView({behavior:"smooth"})}
+function reset(){$("f").reset();["e1","e2","e3","e4"].forEach(i=>$(i).textContent="");$("res").classList.add("hidden");$("calcCard").classList.remove("hidden")}
+$("rs").onclick=reset;$("again").onclick=()=>{reset();$("calc").scrollIntoView({behavior:"smooth"})};
+
+/* ===== rank ===== */
+let lastRank=null;
+$("rgo").onclick=()=>{const n=clean($("rn").value),g=radio("rg");$("e5").textContent="";
+ if(!NAME.test(n)||!g){$("e5").textContent="Enter a valid name and select a gender.";return}
+ const sc=hash("rank:"+norm(n))%100+1,t=RANKS.find(r=>sc<=r[0])[1];lastRank={t,sc};
+ $("rt").textContent=t;$("rsc").textContent=`Fun score: ${sc}/100 · just for entertainment`;$("rr").classList.remove("hidden");hearts(15);
+ addDoc(collection(db,"ranks"),{n,g,cat:t,t:serverTimestamp()}).catch(()=>{})};
+$("rsh").onclick=()=>doShare(lastRank?`👑 I got "${lastRank.t}" on Love Calculator! Find yours:`:"");
+
+/* ===== sharing (generic score only, no names, expires in 30 days) ===== */
+async function makeLink(){const base=location.origin+location.pathname;if(!last)return base;
+ try{const r=await addDoc(collection(db,"shares"),{pct:last.pct,t:serverTimestamp(),exp:Timestamp.fromMillis(Date.now()+30*864e5),active:true,v:0});return base+"?s="+r.id}catch(e){return base}}
+const msg=l=>`💗 I just tried Love Calculator! Curious about your Love Rank? Find yours here: ${l}`;
+async function doShare(txt){const link=await makeLink(),m=txt?txt+" "+link:msg(link);
+ if(navigator.share)try{await navigator.share({text:m,url:link})}catch(e){}else{await navigator.clipboard.writeText(m);toast("Copied!")}}
+$("sh").onclick=()=>doShare();$("b1").onclick=()=>doShare();
+$("b2").onclick=async()=>window.open("https://wa.me/?text="+encodeURIComponent(msg(await makeLink())),"_blank","noopener");
+$("b3").onclick=async()=>{await navigator.clipboard.writeText(await makeLink());toast("Link copied!")};
+$("b4").onclick=async()=>{await navigator.clipboard.writeText(msg(await makeLink()));toast("Result text copied!")};
+const sid=new URLSearchParams(location.search).get("s");
+if(sid&&/^[A-Za-z0-9]{10,40}$/.test(sid)){$("shared").classList.remove("hidden");
+ (async()=>{try{const r=doc(db,"shares",sid),s=await getDoc(r);if(!s.exists())throw 0;const p=s.data().pct;
+  updateDoc(r,{v:increment(1)}).catch(()=>{});
+  $("sbody").innerHTML=`<div class="heart">💗</div><div class="big">${+p}%</div><b>${esc(cat(+p)[1])}</b><p>Someone tried Love Calculator and got this result!</p>`}
+ catch(e){$("sbody").innerHTML="<p>😢 This shared result is unavailable or has expired.</p>"}
+ $("shared").scrollIntoView()})()}
+</script></body></html>
